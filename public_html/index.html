@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery UI フォーム処理</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="js/libs/jqueryui/css/base/minified/jquery-ui.min.css">
+    </head>
+    <body>
+        <form action="index2.html">
+            <p>
+                <label>氏名<input type="text" name="name" id="name"></label>
+            </p>
+            <p>
+                <label>生年月日<input type="date" name="birthday" id="birthday"></label>
+            </p>
+            <p>
+                <label><input type="radio" name="gender" id="male">男性</label>
+                <label><input type="radio" name="gender" id="female">女性</label>
+            </p>
+            <p>
+                <input type="submit" value="登録" id="submit">
+                ※現在のコードでは氏名のみ入力チェックをかけています。
+            </p>
+        </form>
+        <script type="text/javascript" src="js/libs/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="js/libs/jqueryui/jquery-ui.min.js"></script>
+        <script>
+            $(function () {
+                $('form').submit(function () {
+                    // とりあえず氏名のみチェック
+                    if ($('#name').val().length === 0) {
+                        alert("氏名が入力されていません");
+                        return false;
+                    }
+                    // エラーがなければフォームを送信
+                    return true;
+                });
+
+            });
+        </script>
+    </body>
+</html>
