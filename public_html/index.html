@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="js/libs/jqueryui/css/base/minified/jquery-ui.min.css">
+        <link rel="stylesheet" href="js/libs/jqueryui/css/base/minified/jquery.ui.button.min.css">
     </head>
     <body>
         <form action="index2.html">
@@ -12,11 +13,11 @@
                 <label>氏名<input type="text" name="name" id="name"></label>
             </p>
             <p>
-                <label>生年月日<input type="date" name="birthday" id="birthday"></label>
+                <label>生年月日<input type="text" name="birthday" id="birthday"></label>
             </p>
-            <p>
-                <label><input type="radio" name="gender" id="male">男性</label>
-                <label><input type="radio" name="gender" id="female">女性</label>
+            <p id="gender-select">
+                <input type="radio" name="gender" id="male" value="male"><label for="male">男性</label>
+                <input type="radio" name="gender" id="female" value="female"><label for="female">女性</label>
             </p>
             <p>
                 <input type="submit" value="登録" id="submit">
@@ -26,13 +27,39 @@
         <script type="text/javascript" src="js/libs/jqueryui/jquery-ui.min.js"></script>
         <script>
             $(function () {
+                // ラジオボタンをjQuery UIラジオボタンにする
+                $('#gender-select').buttonset();
+                // 日付入力をjQuery UIデートピッカーにする
+                $('#birthday').datepicker();
+                // 登録ボタンをjQuery UIボタンにする
+                $('#submit').button();
+                // フォーム送信時の処理
                 $('form').submit(function () {
-                    // とりあえず氏名のみチェック
+                    // エラーメッセージ
+                    var err = "";
+                    // 氏名の入力チェック
                     if ($('#name').val().length === 0) {
-                        var d = $('<div title="入力エラー">氏名が入力されていません</div>');
+                        err += "<li>氏名が入力されていません</li>";
+                    }
+                    // 氏名の入力チェック
+                    if ($('#birthday').val().length === 0) {
+                        err += "<li>生年月日が入力されていません</li>";
+                    }
+                    // 性別の入力チェック
+                    if (! $('input[name=gender]:checked').val()) {
+                        err += "<li>性別が選択されていません</li>";
+                    }
+                    // エラーがあればダイアログを出す
+                    if (err.length > 0) {
+                        // ダイアログの要素
+                        var d = $('<div title="入力エラー"><ul>' + err + '</ul></div>');
+                        // ダイアログを表示
                         d.dialog({
+                            // モーダル（ダイアログを閉じないとほかの部分を操作できない）
                             modal: true,
+                            // ダイアログに出すボタン
                             buttons: {
+                                // OKボタン、クリック時の処理（ダイアログを閉じる）
                                 "OK": function() {$(this).dialog("close");}
                             }
                         });
